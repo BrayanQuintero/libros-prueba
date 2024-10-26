@@ -31,14 +31,15 @@ public class LibroServiceImpl implements LibroService{
 
         return libro;
     }
-g
+
     @Override
     public Libro save(Libro libro) {
-        return null;
+        libro.setId(0);
+        return libroRepository.save(libro);
     }
 
     @Override
-    public Libro deleteById(int id) {
-        return null;
+    public void deleteById(int id) {
+        libroRepository.deleteById(id);
     }
 }

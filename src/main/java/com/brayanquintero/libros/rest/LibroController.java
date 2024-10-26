@@ -5,10 +5,7 @@ import com.brayanquintero.libros.entity.Libro;
 import com.brayanquintero.libros.service.LibroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,8 +30,20 @@ public class LibroController {
         return libroService.getById(id);
     }
 
-    public void agregarLibro() {
-
+    @PostMapping("/libros")
+    public void agregarLibro(@RequestBody Libro libro) {
+        libroService.save(libro);
     }
+
+    @PutMapping("/libros")
+    public void actualizarLibro(Libro libro) {
+        libroService.save(libro);
+    }
+
+    @DeleteMapping("/libros")
+    public void deleteById(int id) {
+        libroService.deleteById(id);
+    }
+
 
 }

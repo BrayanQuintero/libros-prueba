@@ -12,5 +12,5 @@ public interface LibroService {
 
     Libro save(Libro libro);
 
-    Libro deleteById(int id);
+    void deleteById(int id);
 }
