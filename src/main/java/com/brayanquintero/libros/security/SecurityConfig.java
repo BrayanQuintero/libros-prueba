@@ -20,14 +20,15 @@ public class SecurityConfig {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 
         jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "SELECT nombre, contra, estado FROM usuarios WHERE id = ?"
+                "SELECT nombre, contra, estado FROM usuarios WHERE nombre = ?"
         );
 
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
                 """
                    SELECT u.nombre, r.rol FROM usuarios u 
                    INNER JOIN usuario_rol ur ON u.id = ur.id_usuario 
-                   INNER JOIN roles r ON r.id = ur.id_rol         
+                   INNER JOIN roles r ON r.id = ur.id_rol   
+                   WHERE u.nombre = ?      
                         """
         );
 
