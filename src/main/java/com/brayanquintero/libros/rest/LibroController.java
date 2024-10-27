@@ -45,5 +45,4 @@ public class LibroController {
         libroService.deleteById(id);
     }
 
-
 }
