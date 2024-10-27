@@ -3,10 +3,12 @@ package com.brayanquintero.libros.service;
 import com.brayanquintero.libros.entity.Libro;
 import com.brayanquintero.libros.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class LibroServiceImpl implements LibroService{
 
     private LibroRepository libroRepository;
