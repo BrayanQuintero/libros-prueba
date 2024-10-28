@@ -36,7 +36,23 @@ public class LibroServiceImpl implements LibroService{
 
     @Override
     public Libro save(Libro libro) {
-        libro.setId(0);
+
+        if (libroRepository.existsByNombre(libro.getNombre())) {
+            throw new IllegalArgumentException("El libro ya existe");
+        }
+
+        libro.setId(null);
+        return libroRepository.save(libro);
+    }
+
+    @Override
+    public Libro update(Libro libro) {
+        if (!libroRepository.existsById(libro.getId())) {
+            System.out.println("Error al actualizar");
+        }
+        if (libroRepository.existsByNombreAndIdNot(libro.getNombre(), libro.getId())) {
+            throw new IllegalArgumentException("El libro ya existe");
+        }
         return libroRepository.save(libro);
     }
 

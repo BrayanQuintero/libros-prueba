@@ -36,8 +36,8 @@ public class LibroController {
     }
 
     @PutMapping("/libros")
-    public void actualizarLibro(Libro libro) {
-        libroService.save(libro);
+    public void actualizarLibro(@RequestBody Libro libro) {
+        libroService.update(libro);
     }
 
     @DeleteMapping("/libros/{id}")

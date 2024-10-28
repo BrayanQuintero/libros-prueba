@@ -40,11 +40,11 @@ public class SecurityConfig {
 
         httpSecurity.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers(HttpMethod.GET, "/api/libro").hasAnyRole("USUARIO", "BIBLIOTECARIO", "ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/libros/{id}").hasAnyRole("USUARIO", "BIBLIOTECARIO", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/libros").hasAnyRole("USUARIO", "BIBLIOTECARIO", "ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/libros/**").hasAnyRole("USUARIO", "BIBLIOTECARIO", "ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/libros").hasAnyRole("BIBLIOTECARIO", "ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/libros").hasAnyRole( "BIBLIOTECARIO", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE,"/api/libros/{id}").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/libros/**").hasAnyRole("ADMIN")
         );
 
         httpSecurity.httpBasic(Customizer.withDefaults());

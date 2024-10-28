@@ -11,16 +11,16 @@ public class Libro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Integer id;
+    private Integer id;
 
     @Column(name = "nombre")
-    String nombre;
+    private String nombre;
 
     @Column(name = "precio")
-    BigDecimal precio;
+    private BigDecimal precio;
 
     @Column(name = "stock")
-    Integer stock;
+    private Integer stock;
 
     public Libro() {
     }
