@@ -1,9 +1,15 @@
 package com.brayanquintero.libros.service;
 
 import com.brayanquintero.libros.entity.Libro;
+import com.brayanquintero.libros.exception.LibroNoEncontradoException;
+import com.brayanquintero.libros.exception.LibroNoEncontradoResponse;
 import com.brayanquintero.libros.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +23,7 @@ public class LibroServiceImpl implements LibroService{
     public LibroServiceImpl(LibroRepository libroRepository) {
         this.libroRepository = libroRepository;
     }
+
     @Override
     public List<Libro> getAll() {
         return libroRepository.findAll();
@@ -29,6 +36,8 @@ public class LibroServiceImpl implements LibroService{
 
         if (optional.isPresent()) {
             libro = optional.get();
+        } else {
+            throw new LibroNoEncontradoException("El libro con el id " + id + " no existe");
         }
 
         return libro;
@@ -38,7 +47,7 @@ public class LibroServiceImpl implements LibroService{
     public Libro save(Libro libro) {
 
         if (libroRepository.existsByNombre(libro.getNombre())) {
-            throw new IllegalArgumentException("El libro ya existe");
+            throw new LibroNoEncontradoException("El libro con el nombre " + libro.getNombre() + " ya existe");
         }
 
         libro.setId(null);
@@ -48,16 +57,22 @@ public class LibroServiceImpl implements LibroService{
     @Override
     public Libro update(Libro libro) {
         if (!libroRepository.existsById(libro.getId())) {
-            System.out.println("Error al actualizar");
+            throw new LibroNoEncontradoException("El libro con el id " + libro.getId() + " no existe");
         }
         if (libroRepository.existsByNombreAndIdNot(libro.getNombre(), libro.getId())) {
-            throw new IllegalArgumentException("El libro ya existe");
+            throw new LibroNoEncontradoException("El libro con el nombre " + libro.getNombre() + " ya existe");
         }
         return libroRepository.save(libro);
     }
 
     @Override
     public void deleteById(int id) {
+        if (!libroRepository.existsById(id)) {
+            throw new LibroNoEncontradoException("No existe el libro con el id " + id);
+        }
         libroRepository.deleteById(id);
     }
+
+
+
 }
