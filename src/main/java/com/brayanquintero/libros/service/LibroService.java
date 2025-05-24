@@ -1,18 +1,20 @@
 package com.brayanquintero.libros.service;
 
+import com.brayanquintero.libros.dto.LibroRequestDTO;
+import com.brayanquintero.libros.dto.LibroResponseDTO;
 import com.brayanquintero.libros.entity.Libro;
 
 import java.util.List;
 
 public interface LibroService {
 
-    List<Libro> getAll();
+    List<LibroResponseDTO> getAll();
 
-    Libro getById(int id);
+    LibroResponseDTO getById(int id);
 
-    Libro save(Libro libro);
+    LibroResponseDTO save(LibroRequestDTO libro);
 
-    Libro update(Libro libro);
+    LibroResponseDTO update(LibroRequestDTO libro);
 
     void deleteById(int id);
 }

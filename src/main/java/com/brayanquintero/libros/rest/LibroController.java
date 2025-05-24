@@ -1,6 +1,8 @@
 package com.brayanquintero.libros.rest;
 
 import com.brayanquintero.libros.LibrosApplication;
+import com.brayanquintero.libros.dto.LibroRequestDTO;
+import com.brayanquintero.libros.dto.LibroResponseDTO;
 import com.brayanquintero.libros.entity.Libro;
 import com.brayanquintero.libros.exception.LibroNoEncontradoException;
 import com.brayanquintero.libros.exception.LibroNoEncontradoResponse;
@@ -25,23 +27,23 @@ public class LibroController {
     }
 
     @GetMapping("/libros")
-    public ResponseEntity<List<Libro>> getAll() {
+    public ResponseEntity<List<LibroResponseDTO>> getAll() {
         return new ResponseEntity<>(libroService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/libros/{id}")
-    public ResponseEntity<Libro> getById(@PathVariable int id) {
+    public ResponseEntity<LibroResponseDTO> getById(@PathVariable int id) {
         return new ResponseEntity<>(libroService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping("/libros")
-    public ResponseEntity<Void> agregarLibro(@RequestBody Libro libro) {
+    public ResponseEntity<Void> agregarLibro(@RequestBody LibroRequestDTO libro) {
         libroService.save(libro);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/libros")
-    public ResponseEntity<Void> actualizarLibro(@RequestBody Libro libro) {
+    public ResponseEntity<Void> actualizarLibro(@RequestBody LibroRequestDTO libro) {
         libroService.update(libro);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -1,8 +1,11 @@
 package com.brayanquintero.libros.service;
 
+import com.brayanquintero.libros.dto.LibroRequestDTO;
+import com.brayanquintero.libros.dto.LibroResponseDTO;
 import com.brayanquintero.libros.entity.Libro;
 import com.brayanquintero.libros.exception.LibroNoEncontradoException;
 import com.brayanquintero.libros.exception.LibroNoEncontradoResponse;
+import com.brayanquintero.libros.mapper.LibroMapper;
 import com.brayanquintero.libros.repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -25,12 +28,15 @@ public class LibroServiceImpl implements LibroService{
     }
 
     @Override
-    public List<Libro> getAll() {
-        return libroRepository.findAll();
+    public List<LibroResponseDTO> getAll() {
+        return libroRepository.findAll()
+                .stream()
+                .map(LibroMapper::toResponseDTO)
+                .toList();
     }
 
     @Override
-    public Libro getById(int id) {
+    public LibroResponseDTO getById(int id) {
         Optional<Libro> optional = libroRepository.findById(id);
         Libro libro = null;
 
@@ -40,29 +46,32 @@ public class LibroServiceImpl implements LibroService{
             throw new LibroNoEncontradoException("El libro con el id " + id + " no existe");
         }
 
-        return libro;
+        return LibroMapper.toResponseDTO(libro);
     }
 
     @Override
-    public Libro save(Libro libro) {
+    public LibroResponseDTO save(LibroRequestDTO libro) {
 
         if (libroRepository.existsByNombre(libro.getNombre())) {
             throw new LibroNoEncontradoException("El libro con el nombre " + libro.getNombre() + " ya existe");
         }
 
         libro.setId(null);
-        return libroRepository.save(libro);
+        Libro libroEntidad = LibroMapper.toEntity(libro);
+        return LibroMapper.toResponseDTO(libroRepository.save(libroEntidad));
     }
 
     @Override
-    public Libro update(Libro libro) {
+    public LibroResponseDTO update(LibroRequestDTO libro) {
         if (!libroRepository.existsById(libro.getId())) {
             throw new LibroNoEncontradoException("El libro con el id " + libro.getId() + " no existe");
         }
         if (libroRepository.existsByNombreAndIdNot(libro.getNombre(), libro.getId())) {
             throw new LibroNoEncontradoException("El libro con el nombre " + libro.getNombre() + " ya existe");
         }
-        return libroRepository.save(libro);
+
+        Libro libroEntidad = LibroMapper.toEntity(libro);
+        return LibroMapper.toResponseDTO(libroRepository.save(libroEntidad));
     }
 
     @Override
