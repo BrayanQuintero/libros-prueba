@@ -7,6 +7,7 @@ import com.brayanquintero.libros.entity.Libro;
 import com.brayanquintero.libros.exception.LibroNoEncontradoException;
 import com.brayanquintero.libros.exception.LibroNoEncontradoResponse;
 import com.brayanquintero.libros.service.LibroService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,13 +38,13 @@ public class LibroController {
     }
 
     @PostMapping("/libros")
-    public ResponseEntity<Void> agregarLibro(@RequestBody LibroRequestDTO libro) {
+    public ResponseEntity<Void> agregarLibro(@Valid @RequestBody LibroRequestDTO libro) {
         libroService.save(libro);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/libros")
-    public ResponseEntity<Void> actualizarLibro(@RequestBody LibroRequestDTO libro) {
+    public ResponseEntity<Void> actualizarLibro(@Valid @RequestBody LibroRequestDTO libro) {
         libroService.update(libro);
         return new ResponseEntity<>(HttpStatus.OK);
     }
