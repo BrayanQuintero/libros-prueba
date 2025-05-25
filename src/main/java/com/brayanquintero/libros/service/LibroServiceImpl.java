@@ -5,6 +5,7 @@ import com.brayanquintero.libros.dto.LibroResponseDTO;
 import com.brayanquintero.libros.entity.Libro;
 import com.brayanquintero.libros.exception.LibroNoEncontradoException;
 import com.brayanquintero.libros.exception.LibroNoEncontradoResponse;
+import com.brayanquintero.libros.mapper.LibroMapStructMapper;
 import com.brayanquintero.libros.mapper.LibroMapper;
 import com.brayanquintero.libros.repository.LibroRepository;
 import org.modelmapper.ModelMapper;
@@ -23,19 +24,18 @@ public class LibroServiceImpl implements LibroService{
 
     private final LibroRepository libroRepository;
     private final ModelMapper modelMapper;
+    private final LibroMapStructMapper mapStructMapper;
 
     @Autowired
-    public LibroServiceImpl(LibroRepository libroRepository, ModelMapper modelMapper) {
+    public LibroServiceImpl(LibroRepository libroRepository, ModelMapper modelMapper,LibroMapStructMapper mapStructMapper) {
         this.libroRepository = libroRepository;
         this.modelMapper = modelMapper;
+        this.mapStructMapper = mapStructMapper;
     }
 
     @Override
     public List<LibroResponseDTO> getAll() {
-        return libroRepository.findAll()
-                .stream()
-                .map(l -> modelMapper.map(l, LibroResponseDTO.class))
-                .toList();
+        return mapStructMapper.toDTOList(libroRepository.findAll());
     }
 
     @Override
@@ -49,7 +49,7 @@ public class LibroServiceImpl implements LibroService{
             throw new LibroNoEncontradoException("El libro con el id " + id + " no existe");
         }
 
-        return modelMapper.map(libro, LibroResponseDTO.class);
+        return mapStructMapper.toDTO(libro);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class LibroServiceImpl implements LibroService{
         }
 
         libro.setId(null);
-        Libro libroEntidad = modelMapper.map(libro, Libro.class);
-        return modelMapper.map(libroRepository.save(libroEntidad), LibroResponseDTO.class);
+        Libro libroEntidad = mapStructMapper.toEntity(libro);
+        return mapStructMapper.toDTO(libroRepository.save(libroEntidad));
     }
 
     @Override
@@ -73,8 +73,8 @@ public class LibroServiceImpl implements LibroService{
             throw new LibroNoEncontradoException("El libro con el nombre " + libro.getNombre() + " ya existe");
         }
 
-        Libro libroEntidad = modelMapper.map(libro, Libro.class);
-        return modelMapper.map(libroRepository.save(libroEntidad), LibroResponseDTO.class);
+        Libro libroEntidad = mapStructMapper.toEntity(libro);
+        return mapStructMapper.toDTO(libroRepository.save(libroEntidad));
     }
 
     @Override
@@ -84,7 +84,4 @@ public class LibroServiceImpl implements LibroService{
         }
         libroRepository.deleteById(id);
     }
-
-
-
 }
