@@ -1,21 +1,28 @@
 package com.brayanquintero.libros.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 
+@Schema(
+        description = "LibroRequestDTO Model Infomration"
+)
 public class LibroRequestDTO {
 
     private Integer id;
 
+    @Schema(description = "Book title")
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
 
+    @Schema(description = "Book price")
     @Positive(message = "El precio debe ser positivo")
     private BigDecimal precio;
 
+    @Schema(description = "Book stock")
     @PositiveOrZero(message = "El stock debe ser positivo o cero")
     private Integer stock;
 

@@ -45,6 +45,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/libros").hasAnyRole("BIBLIOTECARIO", "ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/libros").hasAnyRole( "BIBLIOTECARIO", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/libros/**").hasAnyRole("ADMIN")
+                        .requestMatchers(
+                                "/api-docs",              // si cambiaste la ruta
+                                "/swagger-ui/**",         // recursos estáticos del UI
+                                "/v3/api-docs/**",        // documentación OpenAPI
+                                "/swagger-ui.html"        // redirección
+                        ).permitAll()
         );
 
         httpSecurity.httpBasic(Customizer.withDefaults());
